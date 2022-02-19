@@ -44,7 +44,8 @@ def handle_message(event):
         reply =  LocationSendMessage(
             title='HAMA Boutique Outlet',
             address='台北市內湖區民善街215號1樓(HAMA專櫃)',
-            latitude=25.06446,longitude=121.57486
+            latitude=25.064432222106895,
+            longitude=121.5745863441039
             )
         line_bot_api.reply_message(event.reply_token,reply)
     else:
