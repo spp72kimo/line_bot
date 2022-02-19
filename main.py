@@ -47,12 +47,12 @@ def handle_message(event):
             latitude=25.064432222106895,
             longitude=121.5745863441039
             )
-        line_bot_api.reply_message(event.reply_token,reply)
     else:
-        reply = msg
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=msg))
+        reply = TextSendMessage(text=msg)
+    
+    line_bot_api.reply_message(
+        event.reply_token,reply
+        )
 
 
 # import os
