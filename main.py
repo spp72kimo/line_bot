@@ -38,6 +38,7 @@ def callback():
         print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
 
+    print('\n',body,'\n')
     return 'OK'
 
 
@@ -47,7 +48,7 @@ def handle_message(event):
     user_id = event.source.user_id
     reply_token = event.reply_token
     msg = event.message.text
-
+    
     # 取得氣象局的資料
     dataid='F-C0032-001'
     apikey = 'CWB-FE716C0D-A181-471C-B987-02279212628D'
@@ -87,10 +88,18 @@ def handle_message(event):
 
     # msgRex = re.compile(r'[0-21]')
     # msgRex.match(msg)
+    if msg == '測試':
+        f = open('test_temp.json','r',encoding='utf-8')
+        temp = json.load(f)
+        f.close()
+        line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='測試樣板',contents=temp))
+        
+        
     if msg.isdigit():
         # 讀取flex樣板格式
         f = open('template.json','r',encoding='utf-8')
         temp = json.load(f)
+        f.close()
         contents = temp['contents']
         i = int(msg)
         # 設定氣象資料到變數
@@ -114,37 +123,59 @@ def handle_message(event):
             contents[j]['body']['contents'][2]['text'] = f'{startTime} ~ {endTime}'
             contents[j]['body']['contents'][3]['text'] = f'{temperature_Min}°C ~ {temperature_Max}°C'
             contents[j]['body']['contents'][4]['text'] = f'降雨機率：{rain}%'
-        
 
-        f.close()
         # 傳送氣象資訊
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
     else:
-        text='''查詢氣象資料，請輸入數字...
-            '台北市' : 0,
-            '新北市' : 1,
-            '桃園市' : 2,
-            '台中市' : 3,
-            '台南市' : 4,
-            '高雄市' : 5,
-            '基隆市' : 6,
-            '新竹縣' : 7,
-            '新竹市' : 8,
-            '苗栗縣' : 9,
-            '彰化縣' : 10,
-            '南投縣' : 11,
-            '雲林縣' : 12,
-            '嘉義縣' : 13,
-            '嘉義市' : 14,
-            '屏東縣' : 15,
-            '宜蘭縣' : 16,
-            '花蓮縣' : 17,
-            '台東縣' : 18,
-            '澎湖縣' : 19,
-            '金門縣' : 20,
-            '連江縣' : 21'''
+        text=f'''查詢氣象資料，請輸入數字...
+        '台北市' : 0,
+        '新北市' : 1,
+        '桃園市' : 2,
+        '台中市' : 3,
+        '台南市' : 4,
+        '高雄市' : 5,
+        '基隆市' : 6,
+        '新竹縣' : 7,
+        '新竹市' : 8,
+        '苗栗縣' : 9,
+        '彰化縣' : 10,
+        '南投縣' : 11,
+        '雲林縣' : 12,
+        '嘉義縣' : 13,
+        '嘉義市' : 14,
+        '屏東縣' : 15,
+        '宜蘭縣' : 16,
+        '花蓮縣' : 17,
+        '台東縣' : 18,
+        '澎湖縣' : 19,
+        '金門縣' : 20,
+        '連江縣' : 21'''
 
-        line_bot_api.push_message(user_id, TextSendMessage(text=text))
+        line_bot_api.push_message(user_id, TextSendMessage(text=text,
+        quick_reply=QuickReply(
+        items=[
+            QuickReplyButton(
+                action=PostbackAction(label="Postback",data="回傳資料")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="文字訊息",text="回傳文字")
+                ),
+            QuickReplyButton(
+                action=DatetimePickerAction(label="時間選擇",data="時間選擇",mode='datetime')
+                ),
+            QuickReplyButton(
+                action=CameraAction(label="拍照")
+                ),
+            QuickReplyButton(
+                action=CameraRollAction(label="相簿")
+                ),
+            QuickReplyButton(
+                action=LocationAction(label="傳送位置")
+                )
+            ]
+        )
+        )
+        )
 
 
 
