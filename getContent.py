@@ -1,8 +1,16 @@
-from linebot import LineBotApi
+from ssl import ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
+import requests
+import json
 
-line_bot_api = LineBotApi('P8Q73gxhooUHWCXs7boN9tQRwLUOvHDNaAj/8AjvOCTqY0RdOgpu9gsOhZGojAXMiBjhjwuxWlvl0BloHSo+F/5uImCWEi5WP7El5nWpKnkAz56Ouxf31zqFlrsHsgVzVmnnUjiEW+BjOHJx9gNHwAdB04t89/1O/w1cDnyilFU=')
 
-message_content = line_bot_api.get_message_content('15616365313132')
-with open('pic', 'wb') as fd:
-    for chunk in message_content.iter_content():
-        fd.write(chunk)
+
+dataid='F-C0032-001'
+apikey = 'CWB-FE716C0D-A181-471C-B987-02279212628D'
+format = 'JSON'
+res = requests.get(f'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/{dataid}?Authorization={apikey}&format={format}')
+
+with open(f'{dataid}.json','w',encoding='utf-8') as f:
+    f.write(res.text)
+
+meta = json.loads(res.text)
+# print(res.text)

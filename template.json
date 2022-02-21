@@ -1,0 +1,155 @@
+{
+    "type": "carousel",
+    "contents": [
+      {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
+          "size": "full",
+          "margin": "none",
+          "align": "center",
+          "gravity": "center",
+          "aspectRatio": "1:1",
+          "position": "relative"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "台北xx°C",
+              "margin": "2px",
+              "size": "lg",
+              "weight": "bold",
+              "style": "normal",
+              "align": "center",
+              "offsetBottom": "10px"
+            },
+            {
+              "type": "text",
+              "text": "狀況，舒適度"
+            },
+            {
+              "type": "text",
+              "text": "時間XXXX~XXXX"
+            },
+            {
+              "type": "text",
+              "text": "溫度XX~XX"
+            },
+            {
+              "type": "text",
+              "text": "降雨機率XX%"
+            }
+          ],
+          "action": {
+            "type": "postback",
+            "label": "action",
+            "data": "hello"
+          }
+        }
+      },
+      {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
+          "size": "full",
+          "margin": "none",
+          "align": "center",
+          "gravity": "center",
+          "aspectRatio": "1:1",
+          "position": "relative"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "台北xx°C",
+              "margin": "2px",
+              "size": "lg",
+              "weight": "bold",
+              "style": "normal",
+              "align": "center",
+              "offsetBottom": "10px"
+            },
+            {
+              "type": "text",
+              "text": "狀況，舒適度"
+            },
+            {
+              "type": "text",
+              "text": "時間XXXX~XXXX"
+            },
+            {
+              "type": "text",
+              "text": "溫度XX~XX"
+            },
+            {
+              "type": "text",
+              "text": "降雨機率XX%"
+            }
+          ],
+          "action": {
+            "type": "postback",
+            "label": "action",
+            "data": "hello"
+          }
+        }
+      },
+      {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
+          "size": "full",
+          "margin": "none",
+          "align": "center",
+          "gravity": "center",
+          "aspectRatio": "1:1",
+          "position": "relative"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "台北xx°C",
+              "margin": "2px",
+              "size": "lg",
+              "weight": "bold",
+              "style": "normal",
+              "align": "center",
+              "offsetBottom": "10px"
+            },
+            {
+              "type": "text",
+              "text": "狀況，舒適度"
+            },
+            {
+              "type": "text",
+              "text": "時間XXXX~XXXX"
+            },
+            {
+              "type": "text",
+              "text": "溫度XX~XX"
+            },
+            {
+              "type": "text",
+              "text": "降雨機率XX%"
+            }
+          ],
+          "action": {
+            "type": "postback",
+            "label": "action",
+            "data": "hello"
+          }
+        }
+      }
+    ]
+  }

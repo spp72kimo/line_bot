@@ -1,0 +1,85 @@
+{
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://www.mymusic.net.tw/media/images/themeList/035/4035l.jpg",
+    "size": "full",
+    "aspectMode": "cover",
+    "aspectRatio": "1:1"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "IU",
+        "weight": "bold",
+        "style": "normal",
+        "align": "center",
+        "gravity": "center",
+        "wrap": true
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "藝名IU（韓語：아이유 A I Yu ），韓國創作歌手、演員。",
+            "size": "sm",
+            "margin": "none",
+            "weight": "bold",
+            "style": "normal"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "baseline",
+        "contents": [
+          {
+            "type": "icon",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "text",
+            "text": "LILAC"
+          }
+        ],
+        "margin": "xs"
+      },
+      {
+        "type": "box",
+        "layout": "baseline",
+        "contents": [
+          {
+            "type": "icon",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "text",
+            "text": "Palette"
+          }
+        ],
+        "margin": "xs"
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "IG連結",
+          "uri": "https://www.instagram.com/dlwlrma/"
+        }
+      }
+    ],
+    "justifyContent": "flex-start",
+    "alignItems": "center"
+  }
+}

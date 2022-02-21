@@ -1,3 +1,7 @@
+import json
+import os
+import requests
+
 from flask import Flask, request, abort
 
 from linebot import (
@@ -8,7 +12,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
     # MessageEvent, TextMessage, TextSendMessage,
-import json
+
 
 app = Flask(__name__)
 
@@ -24,7 +28,7 @@ def callback():
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    print('這是訊息資訊： ', body)
+   
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -34,6 +38,7 @@ def callback():
 
     return 'OK'
 
+    
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -41,60 +46,75 @@ def handle_message(event):
     user_id = event.source.user_id
     reply_token = event.reply_token
     msg = event.message.text
-    if msg == '地點':
-        reply =  LocationSendMessage(
-            title='HAMA Boutique Outlet',
-            address='台北市內湖區民善街215號1樓(HAMA專櫃)',
-            latitude=25.064432222106895,
-            longitude=121.5745863441039
-            )
-    else:
-        buttons_template_message = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://free.com.tw/blog/wp-content/uploads/2014/08/Placekitten480.jpg',
-                image_aspect_ratio='rectangle',
-                image_size='contain',
-                image_background_color='#FFFFFF',
-                title='Menu',
-                text='Please select',
-                default_action=URIAction(
-                    label='view detail',
-                    uri='http://example.com/page/123'
-                ),
-                actions=[
-                    PostbackAction(
-                        label='postback',
-                        display_text='postback text',
-                        data='action=buy&itemid=1'
-                    ),
-                    LocationAction(
-                        label='location'
-                    ),
-                    DatetimePickerAction(
-                        label='Select date',
-                        data='storeId=12345',
-                        mode='datetime',
-                        initial="2018-12-25T00:00",
-                        min='2017-01-24T23:59',
-                        max='2018-12-25T00:00'
-                    )
-                ]
-            )
-        )
-    
 
-    
-    line_bot_api.reply_message(
-        event.reply_token,buttons_template_message
-        )
+    # 取得氣象局的資料
+    dataid='F-C0032-001'
+    apikey = 'CWB-FE716C0D-A181-471C-B987-02279212628D'
+    format = 'JSON'
+    res = requests.get(f'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/{dataid}?Authorization={apikey}&format={format}')
+    weather = json.loads(res.text)
 
 
-# import os
+    location_index = {
+        '台北市' : 0,
+        '新北市' : 1,
+        '桃園市' : 2,
+        '台中市' : 3,
+        '台南市' : 4,
+        '高雄市' : 5,
+        '基隆市' : 6,
+        '新竹縣' : 7,
+        '新竹市' : 8,
+        '苗栗縣' : 9,
+        '彰化縣' : 10,
+        '南投縣' : 11,
+        '雲林縣' : 12,
+        '嘉義縣' : 13,
+        '嘉義市' : 14,
+        '屏東縣' : 15,
+        '宜蘭縣' : 16,
+        '花蓮縣' : 17,
+        '台東縣' : 18,
+        '澎湖縣' : 19,
+        '金門縣' : 20,
+        '連江縣' : 21
+    }
+    if msg not in location_index:
+        line_bot_api.reply_message(reply_token, TextSendMessage(text='請重新輸入！'))
+    # 讀取flex樣板格式
+    temp = json.load(open('template.json','r',encoding='utf-8'))
+    contents = temp['contents']
+
+    # 設定氣象資料到變數
+    for j in range(3):
+        i = location_index[msg]
+        locationName = weather['cwbopendata']['dataset']['location'][i]['locationName']
+        startTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['startTime'][5:16]
+        endTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['endTime'][5:16]
+        startTime = startTime.replace('T',' ')
+        endTime = endTime.replace('T',' ')
+        condition = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterName']
+        temperature_now = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterValue']
+        temperature_Max = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][1]['time'][j]['parameter']['parameterName']
+        temperature_Min = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][2]['time'][j]['parameter']['parameterName']
+        comfort = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][3]['time'][j]['parameter']['parameterName']
+        rain = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][4]['time'][j]['parameter']['parameterName']
+
+        # 設定氣象資料到flex
+        contents[j]['body']['contents'][0]['text'] = f'{locationName}：{temperature_now}°C '
+        contents[j]['body']['contents'][1]['text'] = f'{condition} {comfort}'
+        contents[j]['body']['contents'][2]['text'] = f'{startTime} ~ {endTime}'
+        contents[j]['body']['contents'][3]['text'] = f'{temperature_Min}°C ~ {temperature_Max}°C'
+        contents[j]['body']['contents'][4]['text'] = f'降雨機率：{rain}%'
+       
+
+    # 傳送氣象資訊
+    line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
+
 
 if __name__ == "__main__":
-    app.run()
-    # port = int(os.environ.get('PORT', 80))
-    # app.run(host='0.0.0.0', port=port)
+    # app.run()
+    port = int(os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=port)
 
     
