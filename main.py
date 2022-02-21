@@ -94,8 +94,13 @@ def handle_message(event):
         f.close()
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='測試樣板',contents=temp))
         
-        
-    if msg.isdigit():
+
+    msgRexp = re.compile(r'[1-21]')
+    mo = msgRexp.match(msg)   
+    print(mo) 
+    if (mo == None):
+         line_bot_api.push_message(user_id, TextSendMessage(text=f'您輸入錯誤：{msg}\n請輸入正確數字！'))
+    if mo:
         # 讀取flex樣板格式
         f = open('template.json','r',encoding='utf-8')
         temp = json.load(f)
@@ -180,8 +185,8 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    app.run()
-    # port = int(os.environ.get('PORT', 80))
-    # app.run(host='0.0.0.0', port=port)
+    # app.run()
+    port = int(os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=port)
 
     
