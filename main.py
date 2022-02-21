@@ -38,7 +38,6 @@ def callback():
 
     return 'OK'
 
-    
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -55,7 +54,7 @@ def handle_message(event):
     weather = json.loads(res.text)
 
 
-    location_index = {
+    text='''查詢氣象資料，請輸入數字...
         '台北市' : 0,
         '新北市' : 1,
         '桃園市' : 2,
@@ -77,17 +76,45 @@ def handle_message(event):
         '台東縣' : 18,
         '澎湖縣' : 19,
         '金門縣' : 20,
-        '連江縣' : 21
-    }
-    if msg not in location_index:
-        line_bot_api.reply_message(reply_token, TextSendMessage(text='請重新輸入！'))
+        '連江縣' : 21'''
+
+    line_bot_api.reply_message(reply_token, TextSendMessage(text=text))
+    
+    # location_index = {
+    #     '台北市' : 0,
+    #     '新北市' : 1,
+    #     '桃園市' : 2,
+    #     '台中市' : 3,
+    #     '台南市' : 4,
+    #     '高雄市' : 5,
+    #     '基隆市' : 6,
+    #     '新竹縣' : 7,
+    #     '新竹市' : 8,
+    #     '苗栗縣' : 9,
+    #     '彰化縣' : 10,
+    #     '南投縣' : 11,
+    #     '雲林縣' : 12,
+    #     '嘉義縣' : 13,
+    #     '嘉義市' : 14,
+    #     '屏東縣' : 15,
+    #     '宜蘭縣' : 16,
+    #     '花蓮縣' : 17,
+    #     '台東縣' : 18,
+    #     '澎湖縣' : 19,
+    #     '金門縣' : 20,
+    #     '連江縣' : 21
+    # }
+    # if msg not in location_index:
+    #     line_bot_api.reply_message(reply_token, TextSendMessage(text='請重新輸入！'))
+
+
     # 讀取flex樣板格式
     temp = json.load(open('template.json','r',encoding='utf-8'))
     contents = temp['contents']
-
+    i = msg
     # 設定氣象資料到變數
     for j in range(3):
-        i = location_index[msg]
+        # i = location_index[msg]
         locationName = weather['cwbopendata']['dataset']['location'][i]['locationName']
         startTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['startTime'][5:16]
         endTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['endTime'][5:16]
