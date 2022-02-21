@@ -89,7 +89,8 @@ def handle_message(event):
     # msgRex.match(msg)
     if msg.isdigit():
         # 讀取flex樣板格式
-        temp = json.load(open('template.json','r',encoding='utf-8'))
+        f = open('template.json','r',encoding='utf-8')
+        temp = json.load(f)
         contents = temp['contents']
         i = int(msg)
         # 設定氣象資料到變數
@@ -115,6 +116,7 @@ def handle_message(event):
             contents[j]['body']['contents'][4]['text'] = f'降雨機率：{rain}%'
         
 
+        f.close()
         # 傳送氣象資訊
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
     else:
