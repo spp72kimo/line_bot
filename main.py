@@ -95,7 +95,7 @@ def handle_message(event):
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='測試樣板',contents=temp))
         
 
-    msgRexp = re.compile(r'[1-21]')
+    msgRexp = re.compile(r'[0-21]')
     mo = msgRexp.match(msg)   
     print(mo) 
     if (mo == None):
