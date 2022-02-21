@@ -5,13 +5,13 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
           "size": "full",
           "margin": "none",
           "align": "center",
           "gravity": "center",
-          "aspectRatio": "1:1",
-          "position": "relative"
+          "position": "relative",
+          "url": "https://linebot-test-machine.herokuapp.com/weather1.jpg",
+          "aspectMode": "cover"
         },
         "body": {
           "type": "box",
@@ -55,13 +55,13 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
           "size": "full",
           "margin": "none",
           "align": "center",
           "gravity": "center",
-          "aspectRatio": "1:1",
-          "position": "relative"
+          "position": "relative",
+          "url": "https://linebot-test-machine.herokuapp.com/weather2.jpg",
+          "aspectMode": "cover"
         },
         "body": {
           "type": "box",
@@ -105,13 +105,13 @@
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://img.freepik.com/free-photo/sun-clouds_1204-19.jpg",
           "size": "full",
           "margin": "none",
           "align": "center",
           "gravity": "center",
-          "aspectRatio": "1:1",
-          "position": "relative"
+          "position": "relative",
+          "url": "https://linebot-test-machine.herokuapp.com/weather3.jpg",
+          "aspectMode": "cover"
         },
         "body": {
           "type": "box",
