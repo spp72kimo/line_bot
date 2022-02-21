@@ -1,5 +1,4 @@
 import json
-import os
 import requests
 
 from flask import Flask, request, abort
@@ -14,7 +13,8 @@ from linebot.models import *
     # MessageEvent, TextMessage, TextSendMessage,
 
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/',static_folder='public')
+
 
 line_bot_api = LineBotApi('P8Q73gxhooUHWCXs7boN9tQRwLUOvHDNaAj/8AjvOCTqY0RdOgpu9gsOhZGojAXMiBjhjwuxWlvl0BloHSo+F/5uImCWEi5WP7El5nWpKnkAz56Ouxf31zqFlrsHsgVzVmnnUjiEW+BjOHJx9gNHwAdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('ece5707c637b53ed6820ca6073a11eb0')
