@@ -1,3 +1,4 @@
+import re
 import json
 import requests
 
@@ -53,32 +54,6 @@ def handle_message(event):
     res = requests.get(f'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/{dataid}?Authorization={apikey}&format={format}')
     weather = json.loads(res.text)
 
-
-    text='''查詢氣象資料，請輸入數字...
-        '台北市' : 0,
-        '新北市' : 1,
-        '桃園市' : 2,
-        '台中市' : 3,
-        '台南市' : 4,
-        '高雄市' : 5,
-        '基隆市' : 6,
-        '新竹縣' : 7,
-        '新竹市' : 8,
-        '苗栗縣' : 9,
-        '彰化縣' : 10,
-        '南投縣' : 11,
-        '雲林縣' : 12,
-        '嘉義縣' : 13,
-        '嘉義市' : 14,
-        '屏東縣' : 15,
-        '宜蘭縣' : 16,
-        '花蓮縣' : 17,
-        '台東縣' : 18,
-        '澎湖縣' : 19,
-        '金門縣' : 20,
-        '連江縣' : 21'''
-
-    line_bot_api.reply_message(reply_token, TextSendMessage(text=text))
     
     # location_index = {
     #     '台北市' : 0,
@@ -108,35 +83,66 @@ def handle_message(event):
     #     line_bot_api.reply_message(reply_token, TextSendMessage(text='請重新輸入！'))
 
 
-    # 讀取flex樣板格式
-    temp = json.load(open('template.json','r',encoding='utf-8'))
-    contents = temp['contents']
-    i = msg
-    # 設定氣象資料到變數
-    for j in range(3):
-        # i = location_index[msg]
-        locationName = weather['cwbopendata']['dataset']['location'][i]['locationName']
-        startTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['startTime'][5:16]
-        endTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['endTime'][5:16]
-        startTime = startTime.replace('T',' ')
-        endTime = endTime.replace('T',' ')
-        condition = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterName']
-        temperature_now = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterValue']
-        temperature_Max = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][1]['time'][j]['parameter']['parameterName']
-        temperature_Min = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][2]['time'][j]['parameter']['parameterName']
-        comfort = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][3]['time'][j]['parameter']['parameterName']
-        rain = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][4]['time'][j]['parameter']['parameterName']
 
-        # 設定氣象資料到flex
-        contents[j]['body']['contents'][0]['text'] = f'{locationName}：{temperature_now}°C '
-        contents[j]['body']['contents'][1]['text'] = f'{condition} {comfort}'
-        contents[j]['body']['contents'][2]['text'] = f'{startTime} ~ {endTime}'
-        contents[j]['body']['contents'][3]['text'] = f'{temperature_Min}°C ~ {temperature_Max}°C'
-        contents[j]['body']['contents'][4]['text'] = f'降雨機率：{rain}%'
-       
+    # msgRex = re.compile(r'[0-21]')
+    # msgRex.match(msg)
+    if msg.isdigit():
+        # 讀取flex樣板格式
+        temp = json.load(open('template.json','r',encoding='utf-8'))
+        contents = temp['contents']
+        i = msg
+        # 設定氣象資料到變數
+        for j in range(3):
+            # i = location_index[msg]
+            locationName = weather['cwbopendata']['dataset']['location'][i]['locationName']
+            startTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['startTime'][5:16]
+            endTime = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['endTime'][5:16]
+            startTime = startTime.replace('T',' ')
+            endTime = endTime.replace('T',' ')
+            condition = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterName']
+            temperature_now = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][0]['time'][j]['parameter']['parameterValue']
+            temperature_Max = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][1]['time'][j]['parameter']['parameterName']
+            temperature_Min = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][2]['time'][j]['parameter']['parameterName']
+            comfort = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][3]['time'][j]['parameter']['parameterName']
+            rain = weather['cwbopendata']['dataset']['location'][i]['weatherElement'][4]['time'][j]['parameter']['parameterName']
 
-    # 傳送氣象資訊
-    line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
+            # 設定氣象資料到flex
+            contents[j]['body']['contents'][0]['text'] = f'{locationName}：{temperature_now}°C '
+            contents[j]['body']['contents'][1]['text'] = f'{condition} {comfort}'
+            contents[j]['body']['contents'][2]['text'] = f'{startTime} ~ {endTime}'
+            contents[j]['body']['contents'][3]['text'] = f'{temperature_Min}°C ~ {temperature_Max}°C'
+            contents[j]['body']['contents'][4]['text'] = f'降雨機率：{rain}%'
+        
+
+        # 傳送氣象資訊
+        line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
+    else:
+    text='''查詢氣象資料，請輸入數字...
+        '台北市' : 0,
+        '新北市' : 1,
+        '桃園市' : 2,
+        '台中市' : 3,
+        '台南市' : 4,
+        '高雄市' : 5,
+        '基隆市' : 6,
+        '新竹縣' : 7,
+        '新竹市' : 8,
+        '苗栗縣' : 9,
+        '彰化縣' : 10,
+        '南投縣' : 11,
+        '雲林縣' : 12,
+        '嘉義縣' : 13,
+        '嘉義市' : 14,
+        '屏東縣' : 15,
+        '宜蘭縣' : 16,
+        '花蓮縣' : 17,
+        '台東縣' : 18,
+        '澎湖縣' : 19,
+        '金門縣' : 20,
+        '連江縣' : 21'''
+
+    line_bot_api.push_message(user_id, TextSendMessage(text=text))
+
 
 
 if __name__ == "__main__":
