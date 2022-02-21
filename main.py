@@ -1,4 +1,5 @@
 import re
+import os
 import json
 import requests
 
@@ -90,7 +91,7 @@ def handle_message(event):
         # 讀取flex樣板格式
         temp = json.load(open('template.json','r',encoding='utf-8'))
         contents = temp['contents']
-        i = msg
+        i = int(msg)
         # 設定氣象資料到變數
         for j in range(3):
             # i = location_index[msg]
@@ -141,7 +142,7 @@ def handle_message(event):
             '金門縣' : 20,
             '連江縣' : 21'''
 
-    line_bot_api.push_message(user_id, TextSendMessage(text=text))
+        line_bot_api.push_message(user_id, TextSendMessage(text=text))
 
 
 
