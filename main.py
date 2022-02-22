@@ -1,4 +1,3 @@
-import re
 import os
 import json
 import requests
@@ -95,12 +94,10 @@ def handle_message(event):
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='測試樣板',contents=temp))
         
 
-    msgRexp = re.compile(r'[0-2][0-1]')
-    mo = msgRexp.match(msg)   
-    print(mo) 
-    if (mo == None):
+
+    if (!msg.isdigit()) | int(msg)>21 | int(msg)<0:
          line_bot_api.push_message(user_id, TextSendMessage(text=f'您輸入錯誤：{msg}\n請輸入正確數字！'))
-    if mo:
+    else:
         # 讀取flex樣板格式
         f = open('template.json','r',encoding='utf-8')
         temp = json.load(f)
@@ -131,7 +128,7 @@ def handle_message(event):
 
         # 傳送氣象資訊
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
-    else:
+    if msg =='選單':
         text=f'''查詢氣象資料，請輸入數字...
         '台北市' : 0,
         '新北市' : 1,
