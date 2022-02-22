@@ -95,9 +95,7 @@ def handle_message(event):
         
 
 
-    if (!msg.isdigit()) | int(msg)>21 | int(msg)<0:
-         line_bot_api.push_message(user_id, TextSendMessage(text=f'您輸入錯誤：{msg}\n請輸入正確數字！'))
-    else:
+    if int(msg) < 22 & int(msg) >= 0
         # 讀取flex樣板格式
         f = open('template.json','r',encoding='utf-8')
         temp = json.load(f)
@@ -128,7 +126,9 @@ def handle_message(event):
 
         # 傳送氣象資訊
         line_bot_api.reply_message(reply_token, FlexSendMessage(alt_text='天氣預報',contents=temp))
-    if msg =='選單':
+    else:
+        line_bot_api.push_message(user_id, TextSendMessage(text=f'您輸入錯誤：{msg}\n請輸入正確數字！'))
+        msg =='選單':
         text=f'''查詢氣象資料，請輸入數字...
         '台北市' : 0,
         '新北市' : 1,
